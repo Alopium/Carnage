@@ -15,6 +15,7 @@ void setlift(int liftpower){
 }
 
 
+
 ez::PID liftPID{0.6,0,0,0,"Lift"};
 
 void lift_wait(){
@@ -31,6 +32,7 @@ void lift_task(){
         pros::delay(ez::util::DELAY_TIME);
     }
 }
+bool isRed = true;
 void CS_task(){
         pros::delay(2000);
         while(true){
@@ -53,10 +55,17 @@ void CS_task(){
         setIntake(-127);
         pros::delay(75);
         setIntake(0);
-    }   else {
-        setIntake((master.get_digital(pros::E_CONTROLLER_DIGITAL_R1)-master.get_digital(pros::E_CONTROLLER_DIGITAL_R2))*127);
-    }
-
+    }  
+        //setIntake((master.get_digital(pros::E_CONTROLLER_DIGITAL_R1)-master.get_digital(pros::E_CONTROLLER_DIGITAL_R2))*127);
+        if(master.get_digital(pros::E_CONTROLLER_DIGITAL_R2)){
+            setIntake(-127);
+        }
+        else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
+        setIntake(127);
+        }
+        else {
+        setIntake(0);
+        }
     pros::delay(ez::util::DELAY_TIME);
 }
 

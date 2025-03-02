@@ -57,7 +57,9 @@ void default_constants() {
 // Drive Example
 ///
 void test(){
-  chassis.pid_drive_set(48, 110, true);
+isRed = false;
+setIntake(-127);
+chassis.pid_drive_set(10, 110);
 }
 void redpm(){
 // alliance, 3 ring, ladder
