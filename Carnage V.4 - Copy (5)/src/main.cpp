@@ -15,7 +15,7 @@ ez::Drive chassis(
     {-16, 17, 18},  // Right Chassis Ports (negative port will reverse it!)
 
     9,      // IMU Port
-    4,  // Wheel Diameter (Remember, 4" wheels without screw holes are actually 4.125!)
+    2.75,  // Wheel Diameter (Remember, 4" wheels without screw holes are actually 4.125!)
     600);   // Wheel RPM = cartridge * (motor gear / wheel gear)
 
 // Uncomment the trackers you're using here!
@@ -263,16 +263,16 @@ void opcontrol() {
     doinkl.button_toggle(master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_Y));
     
   if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_RIGHT)){
-            liftPID.target_set(308);
+            liftPID.target_set(320);
     };
     if(master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_L1)){
-            liftPID.target_set(-3000);
+            liftPID.target_set(-2000);
     }
 if(master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_L2)){
             liftPID.target_set(1900);
     }
 if(master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_LEFT)){
-            liftPID.target_set(-3000);
+            liftPID.target_set(-2000);
 }
   if(bumper.get_value() == true){
     lift.set_zero_position(0);
