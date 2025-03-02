@@ -1,3 +1,4 @@
+#include <string>
 #include "main.h"
 #include "pros/misc.h"
 #include "pros/rtos.hpp"
@@ -31,8 +32,19 @@ void lift_task(){
     }
 }
 void CS_task(){
-    pros::delay(2000);
-    
+        pros::delay(2000);
+        while(true){
+            colorsort.set_led_pwm(100);
+        if(colorsort.get_hue() <230 && colorsort.get_hue() >180){
+            pros::delay(50);
+            setIntake(127);
+            pros::delay(500);
+            setIntake(-127);
+
+        }
+        
+    }
+    pros::delay(ez::util::DELAY_TIME);
 }
 
 

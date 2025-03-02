@@ -16,4 +16,4 @@ inline pros::adi::DigitalIn bumper('A');
 inline ez::Piston ringrush('D');
 inline ez::Piston doinkl('F');
 inline ez::Piston doinkrc('B');
-inline pros::Optical colorsort(0);
+inline pros::Optical colorsort(21);
