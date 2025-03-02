@@ -253,7 +253,7 @@ void opcontrol() {
     // . . .
     // Put more user control code here!
     // . . .
-    setIntake((master.get_digital(pros::E_CONTROLLER_DIGITAL_R1)-master.get_digital(pros::E_CONTROLLER_DIGITAL_R2))*127);
+    colorsort.set_integration_time(3);
     if (master.get_digital(pros::E_CONTROLLER_DIGITAL_B)){
       clamps.set(true);
     }
