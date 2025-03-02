@@ -35,7 +35,7 @@ void CS_task(){
         pros::delay(2000);
         while(true){
             colorsort.set_led_pwm(85);
-        if(colorsort.get_hue() <230 && colorsort.get_hue() >180 && isRed == true){
+        if(colorsort.get_hue() <230 && colorsort.get_hue() >180 && isRed){
             pros::delay(45);
             setIntake(-127);
             pros::delay(135);
@@ -44,7 +44,7 @@ void CS_task(){
             setIntake(-127);
             pros::delay(75);
             setIntake(0);
-    }    else if (colorsort.get_hue() <40 && colorsort.get_hue() >5 && isRed == false) {
+    }    else if (colorsort.get_hue() <40 && colorsort.get_hue() >5 && !isRed) {
         pros::delay(45);
         setIntake(-127);
         pros::delay(135);

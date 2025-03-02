@@ -11,4 +11,5 @@ void liftWait();
 void lift_task();
 void init();
 void CS_task();
-bool isRed;
+extern bool isRed;
+bool isRed = true;
