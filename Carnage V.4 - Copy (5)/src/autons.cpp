@@ -57,7 +57,6 @@ void default_constants() {
 // Drive Example
 ///
 void test(){
-isRed = false;
 setIntake(-127);
 chassis.pid_drive_set(10, 110);
 }
