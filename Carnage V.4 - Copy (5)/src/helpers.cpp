@@ -44,7 +44,16 @@ void CS_task(){
             setIntake(-127);
             pros::delay(75);
             setIntake(0);
-    }    else {
+    }    else if (colorsort.get_hue() <40 && colorsort.get_hue() >5 && isRed == false) {
+        pros::delay(45);
+        setIntake(-127);
+        pros::delay(135);
+        setIntake(127);
+        pros::delay(75);
+        setIntake(-127);
+        pros::delay(75);
+        setIntake(0);
+    }   else {
         setIntake((master.get_digital(pros::E_CONTROLLER_DIGITAL_R1)-master.get_digital(pros::E_CONTROLLER_DIGITAL_R2))*127);
     }
 
