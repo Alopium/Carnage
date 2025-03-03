@@ -260,6 +260,7 @@ void opcontrol() {
     else {
     clamps.set(false);
     }
+
     doinkr.button_toggle(master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_DOWN));
     doinkl.button_toggle(master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_Y));
     

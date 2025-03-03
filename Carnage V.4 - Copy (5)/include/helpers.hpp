@@ -12,4 +12,5 @@ void lift_task();
 void init();
 void CS_task();
 extern bool isRed;
+extern int IntakeSpeed;
 

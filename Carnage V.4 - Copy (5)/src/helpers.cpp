@@ -33,6 +33,8 @@ void lift_task(){
     }
 }
 bool isRed = true;
+int IntakeSpeed;
+bool OPControl;
 void CS_task(){
         pros::delay(2000);
         while(true){
@@ -56,8 +58,13 @@ void CS_task(){
         pros::delay(75);
         setIntake(0);
     }  
-        setIntake((master.get_digital(pros::E_CONTROLLER_DIGITAL_R1)-master.get_digital(pros::E_CONTROLLER_DIGITAL_R2))*127);
-    pros::delay(ez::util::DELAY_TIME);
+    if (master.get_digital(pros::E_CONTROLLER_DIGITAL_R2)){
+        setIntake(-127);
+    } else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_R1)){
+        setIntake(127);
+    } else{
+        setIntake(0);
+    }    pros::delay(ez::util::DELAY_TIME);
 }
 
 }
