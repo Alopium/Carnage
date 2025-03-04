@@ -57,9 +57,9 @@ void default_constants() {
 // Drive Example
 ///
 void test(){
-  CS_task();
+  ColorSort = 2;
   setIntake(-127);
-  chassis.pid_odom_set(48,110);
+  chassis.pid_drive_set(48,110);
   chassis.pid_wait();
 }
 void redpm(){

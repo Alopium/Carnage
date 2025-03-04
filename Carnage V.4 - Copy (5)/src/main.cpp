@@ -7,6 +7,37 @@
 // For installation, upgrading, documentations, and tutorials, check out our website!
 // https://ez-robotics.github.io/EZ-Template/
 /////
+bool WrongColor;
+
+
+pros::Task colorSortTask([]() {
+  pros::delay(2000);
+  colorsort.set_led_pwm(100);
+  while (true) {
+    // Red Sorting 
+    if( ColorSort == 1){
+      if(colorsort.get_hue() < 40 && colorsort.get_hue() > 5){
+        WrongColor = true;
+      }
+    }
+    //Blue Sorting
+    if(ColorSort == 2){
+      if(colorsort.get_hue() < 230 && colorsort.get_hue() > 175){
+        WrongColor = true;
+      }
+    }
+    //Sort
+    if(WrongColor){
+      pros::delay(168);
+      setIntake(127);
+      pros::delay(105);
+      setIntake(-127);
+      WrongColor = false;
+    }
+    pros::delay(ez::util::DELAY_TIME);
+    }
+  }
+);
 
 // Chassis constructor
 ez::Drive chassis(
@@ -24,8 +55,8 @@ ez::Drive chassis(
 //  - you should get positive values on the encoders going FORWARD and RIGHT
 // - `2.75` is the wheel diameter
 // - `4.0` is the distance from the center of the wheel to the center of the robot
-  ez::tracking_wheel vertl(-11, 2, -2.2, 1.0);  // This tracking wheel is perpendicular to the drive wheels
-  ez::tracking_wheel vertr(19, 2, 2.2, 1.0);   // This tracking wheel is parallel to the drive wheels
+  ez::tracking_wheel vertl(-11, 2.75, -2.2, 1.0);  // This tracking wheel is perpendicular to the drive wheels
+  ez::tracking_wheel vertr(19, 2.75, 2.2, 1.0);   // This tracking wheel is parallel to the drive wheels
 
 /**
  * Runs initialization code. This occurs as soon as the program is started.
@@ -79,7 +110,6 @@ Auton("SKILLS",skills),
   master.rumble(chassis.drive_imu_calibrated() ? "." : "---");
 }
 pros::Task Lifttask(lift_task);
-pros::Task CSTask(CS_task);
 /**
  * Runs while the robot is in the disabled state of Field Management System or
  * the VEX Competition Switch, following either autonomous or opcontrol. When
@@ -202,8 +232,8 @@ void ez_template_extras() {
     //  When enabled:
     //  * use A and Y to increment / decrement the constants
     //  * use the arrow keys to navigate the constants
-    if (master.get_digital_new_press(DIGITAL_X))
-      chassis.pid_tuner_toggle();
+    //if (master.get_digital_new_press(DIGITAL_X))
+      //chassis.pid_tuner_toggle();
 
     // Trigger the selected autonomous routine
     if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_UP)) {
@@ -240,10 +270,11 @@ void opcontrol() {
   // This is preference to what you like to drive on
   chassis.drive_brake_set(pros::E_MOTOR_BRAKE_HOLD);
 
-  while (true) {
-    // Gives you some extras to make EZ-Template ezier
+  while (true) {    // Gives you some extras to make EZ-Template ezier
     ez_template_extras();
-
+    if(!WrongColor){
+      setIntake((master.get_digital(pros::E_CONTROLLER_DIGITAL_R1)-master.get_digital(pros::E_CONTROLLER_DIGITAL_R2))*-127);
+  }      
     //chassis.opcontrol_tank();  // Tank control
     chassis.opcontrol_arcade_standard(ez::SPLIT);   // Standard split arcade
     // chassis.opcontrol_arcade_standard(ez::SINGLE);  // Standard single arcade
@@ -260,7 +291,12 @@ void opcontrol() {
     else {
     clamps.set(false);
     }
-
+    if(master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_X)&& ColorSort == 1){
+      ColorSort = 2;
+    }
+    if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_A)&& ColorSort == 2){
+      ColorSort = 1;
+    }
     doinkr.button_toggle(master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_DOWN));
     doinkl.button_toggle(master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_Y));
     

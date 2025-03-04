@@ -17,3 +17,5 @@ inline ez::Piston ringrush('D');
 inline ez::Piston doinkl('F');
 inline ez::Piston doinkrc('B');
 inline pros::Optical colorsort(7);
+inline int ColorSort = 2;
+
