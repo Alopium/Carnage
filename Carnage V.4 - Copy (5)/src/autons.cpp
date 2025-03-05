@@ -20,11 +20,11 @@ const int SWING_SPEED = 110;
 ///
 void default_constants() {
   // P, I, D, and Start I
-  chassis.pid_drive_constants_set(6, 0 , 0);   //310      // Fwd/rev constants, used for odom and non odom motions
+  chassis.pid_drive_constants_set(8.8, 0, 38.4);   //8.5, 20,|| 8.8, 38   // Fwd/rev constants, used for odom and non odom motions
   chassis.pid_heading_constants_set(16.0, 0.0, 25.0);        // Holds the robot straight while going forward without odom
-  chassis.pid_turn_constants_set(5.2, 0.14, 38, 12.0);     // Turn in place constants
+  chassis.pid_turn_constants_set(3.61, 0,25, 15.0); // 1.6 5 3.61 25   // Turn in place constants
   chassis.pid_swing_constants_set(6.0, 0.0, 65.0);           // Swing constants
-  chassis.pid_odom_angular_constants_set(10, 0.07, 60 );    // Angular control for odom motions
+  chassis.pid_odom_angular_constants_set(5, 0, 0 );    // Angular control for odom motions
   chassis.pid_odom_boomerang_constants_set(6, 0.0, 28);  // Angular control for boomerang motions
 
   // Exit conditions
@@ -57,11 +57,9 @@ void default_constants() {
 // Drive Example
 ///
 void test(){
-  ColorSort = 2;
-  setIntake(-127);
-  chassis.pid_drive_set(48,110);
-  chassis.pid_wait();
-}
+  chassis.pid_drive_set(48, 110);
+  }
+
 void redpm(){
 // alliance, 3 ring, ladder
 }

@@ -46,7 +46,7 @@ ez::Drive chassis(
     {-16, 17, 18},  // Right Chassis Ports (negative port will reverse it!)
 
     9,      // IMU Port
-    2.75,  // Wheel Diameter (Remember, 4" wheels without screw holes are actually 4.125!)
+    3.12,  // Wheel Diameter (Remember, 4" wheels without screw holes are actually 4.125!)
     600,
     1.0);   // Wheel RPM = cartridge * (motor gear / wheel gear)
 
@@ -55,8 +55,8 @@ ez::Drive chassis(
 //  - you should get positive values on the encoders going FORWARD and RIGHT
 // - `2.75` is the wheel diameter
 // - `4.0` is the distance from the center of the wheel to the center of the robot
-  ez::tracking_wheel vertl(-11, 2.75, -2.2, 1.0);  // This tracking wheel is perpendicular to the drive wheels
-  ez::tracking_wheel vertr(19, 2.75, 2.2, 1.0);   // This tracking wheel is parallel to the drive wheels
+  ez::tracking_wheel vertl(-11, 3.12, 2.2, 1.0);  // This tracking wheel is perpendicular to the drive wheels
+  ez::tracking_wheel vertr(19, 3.12, 2.2, 1.0);   // This tracking wheel is parallel to the drive wheels
 
 /**
  * Runs initialization code. This occurs as soon as the program is started.
@@ -273,7 +273,7 @@ void opcontrol() {
   while (true) {    // Gives you some extras to make EZ-Template ezier
     ez_template_extras();
     if(!WrongColor){
-      setIntake((master.get_digital(pros::E_CONTROLLER_DIGITAL_R1)-master.get_digital(pros::E_CONTROLLER_DIGITAL_R2))*-127);
+      setIntake((master.get_digital(pros::E_CONTROLLER_DIGITAL_R2)-master.get_digital(pros::E_CONTROLLER_DIGITAL_R1))*-127);
   }      
     //chassis.opcontrol_tank();  // Tank control
     chassis.opcontrol_arcade_standard(ez::SPLIT);   // Standard split arcade
