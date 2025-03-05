@@ -46,17 +46,17 @@ ez::Drive chassis(
     {-16, 17, 18},  // Right Chassis Ports (negative port will reverse it!)
 
     9,      // IMU Port
-    3.12,  // Wheel Diameter (Remember, 4" wheels without screw holes are actually 4.125!)
-    600,
-    1.0);   // Wheel RPM = cartridge * (motor gear / wheel gear)
+    2.885,  // Wheel Diameter (Remember, 4" wheels without screw holes are actually 4.125!)
+    1.0,
+    -11, 19);   // Wheel RPM = cartridge * (motor gear / wheel gear)
 
 // Uncomment the trackers you're using here!
 // - `8` and `9` are smart ports (making these negative will reverse the sensor)
 //  - you should get positive values on the encoders going FORWARD and RIGHT
 // - `2.75` is the wheel diameter
 // - `4.0` is the distance from the center of the wheel to the center of the robot
-  ez::tracking_wheel vertl(-11, 3.12, 2.2, 1.0);  // This tracking wheel is perpendicular to the drive wheels
-  ez::tracking_wheel vertr(19, 3.12, 2.2, 1.0);   // This tracking wheel is parallel to the drive wheels
+//ez::tracking_wheel vertl(-11, 3, 2.2, 1.0);  // This tracking wheel is perpendicular to the drive wheels
+//ez::tracking_wheel vertr(19, 3, 2.2, 1.0);   // This tracking wheel is parallel to the drive wheels
 
 /**
  * Runs initialization code. This occurs as soon as the program is started.
@@ -76,8 +76,8 @@ void initialize() {
   // Look at your vertical tracking wheel and decide if it's to the left or right of the center of the robot
   //  - change `left` to `right` if the tracking wheel is to the right of the centerline
   //  - ignore this if you aren't using a vertical tracker
-  chassis.odom_tracker_left_set(&vertl);
-  chassis.odom_tracker_right_set(&vertr);
+//chassis.odom_tracker_left_set(&vertl);
+//chassis.odom_tracker_right_set(&vertr);
 
   // Configure your chassis controls
   chassis.opcontrol_curve_buttons_toggle(false);   // Enables modifying the controller curve with buttons on the joysticks
