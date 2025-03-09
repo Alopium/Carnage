@@ -1,4 +1,6 @@
 #include "main.h"
+#include "pros/device.hpp"
+#include "pros/rtos.hpp"
 
 
 
@@ -13,4 +15,24 @@ void init();
 void CS_task();
 extern bool isRed;
 extern int IntakeSpeed;
+inline void unjam (){
+    setIntake(127);
+    pros::delay(150);
+    setIntake(-127);
+    pros::delay(150);
+    setIntake(0);
 
+
+};
+inline void loadlb(){
+    setIntake(0);
+    pros::delay(125);
+    setIntake(-127);
+    pros::delay(125);
+    setIntake(0);
+    pros::delay(125);
+    setIntake(-127);
+    pros::delay(125);
+    setIntake(0);
+
+}

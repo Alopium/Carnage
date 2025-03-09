@@ -7,6 +7,81 @@
 // For installation, upgrading, documentations, and tutorials, check out our website!
 // https://ez-robotics.github.io/EZ-Template/
 /////
+
+// Chassis constructor
+ez::Drive chassis(
+    // These are your drive motors, the first motor is used for sensing!
+    {12, -13, -14},     // Left Chassis Ports (negative port will reverse it!)
+    {-16, 17, 18},  // Right Chassis Ports (negative port will reverse it!)
+
+    9,      // IMU Port
+    2.75,  // Wheel Diameter (Remember, 4" wheels without screw holes are actually 4.125!)
+    600);   // Wheel RPM = cartridge * (motor gear / wheel gear)
+
+// Uncomment the trackers you're using here!
+// - `8` and `9` are smart ports (making these negative will reverse the sensor)
+//  - you should get positive values on the encoders going FORWARD and RIGHT
+// - `2.75` is the wheel diameter
+// - `4.0` is the distance from the center of the wheel to the center of the robot
+  ez::tracking_wheel vertl(-11, 2, 2.2, 1.0);  // This tracking wheel is perpendicular to the drive wheels
+  ez::tracking_wheel vertr(19, 2, 2.2, 1.0);   // This tracking wheel is parallel to the drive wheels
+
+/**
+ * Runs initialization code. This occurs as soon as the program is started.
+ *
+ * All other competition modes are blocked by initialize; it is recommended
+ * to keep execution time for this mode under a few seconds.
+ */
+void initialize() {
+  // Print our branding over your terminal :D
+  ez::ez_template_print();
+  pros::delay(500);  // Stop the user from doing anything while legacy ports configure
+
+  // Look at your horizontal tracking wheel and decide if it's in front of the midline of your robot or behind it
+  //  - change `back` to `front` if the tracking wheel is in front of the midline
+  //  - ignore this if you aren't using a horizontal tracker
+  // chassis.odom_tracker_back_set(&horiz_tracker);
+  // Look at your vertical tracking wheel and decide if it's to the left or right of the center of the robot
+  //  - change `left` to `right` if the tracking wheel is to the right of the centerline
+  //  - ignore this if you aren't using a vertical tracker
+//chassis.odom_tracker_left_set(&vertl);
+//chassis.odom_tracker_right_set(&vertr);
+
+  // Configure your chassis controls
+  chassis.opcontrol_curve_buttons_toggle(false);   // Enables modifying the controller curve with buttons on the joysticks
+  chassis.opcontrol_drive_activebrake_set(0);   // Sets the active brake kP. We recommend ~2.  0 will disable.
+  chassis.opcontrol_curve_default_set(1, 1);  // Defaults for curve. If using tank, only the first parameter is used. (Comment this line out if you have an SD card!)
+
+  // Set the drive to your own constants from autons.cpp!
+  default_constants();
+  init();
+  lift.tare_position();
+
+  // These are already defaulted to these buttons, but you can change the left/right curve buttons here!
+  // chassis.opcontrol_curve_buttons_left_set(pros::E_CONTROLLER_DIGITAL_LEFT, pros::E_CONTROLLER_DIGITAL_RIGHT);  // If using tank, only the left side is used.
+  // chassis.opcontrol_curve_buttons_right_set(pros::E_CONTROLLER_DIGITAL_Y, pros::E_CONTROLLER_DIGITAL_A);
+
+  // Autonomous Selector using LLEMU
+  ez::as::auton_selector.autons_add({
+//Auton("GOAL RUSH BLUE", goalrb),
+Auton("RED SOLO AWP POS", skills),
+Auton("test", test),
+Auton("test", test),
+Auton("test", test),
+Auton("test", test),
+Auton("test", test),
+Auton("test", test),
+Auton("test", test),
+Auton("test", test),
+Auton("SKILLS",skills),
+
+  });
+  // Initialize chassis and auton selector
+  chassis.initialize();
+  ez::as::initialize();
+  master.rumble(chassis.drive_imu_calibrated() ? "." : "---");
+}
+pros::Task Lifttask(lift_task);
 bool WrongColor;
 
 
@@ -39,77 +114,6 @@ pros::Task colorSortTask([]() {
   }
 );
 
-// Chassis constructor
-ez::Drive chassis(
-    // These are your drive motors, the first motor is used for sensing!
-    {12, -13, -14},     // Left Chassis Ports (negative port will reverse it!)
-    {-16, 17, 18},  // Right Chassis Ports (negative port will reverse it!)
-
-    9,      // IMU Port
-    2.885,  // Wheel Diameter (Remember, 4" wheels without screw holes are actually 4.125!)
-    1.0,
-    -11, 19);   // Wheel RPM = cartridge * (motor gear / wheel gear)
-
-// Uncomment the trackers you're using here!
-// - `8` and `9` are smart ports (making these negative will reverse the sensor)
-//  - you should get positive values on the encoders going FORWARD and RIGHT
-// - `2.75` is the wheel diameter
-// - `4.0` is the distance from the center of the wheel to the center of the robot
-//ez::tracking_wheel vertl(-11, 3, 2.2, 1.0);  // This tracking wheel is perpendicular to the drive wheels
-//ez::tracking_wheel vertr(19, 3, 2.2, 1.0);   // This tracking wheel is parallel to the drive wheels
-
-/**
- * Runs initialization code. This occurs as soon as the program is started.
- *
- * All other competition modes are blocked by initialize; it is recommended
- * to keep execution time for this mode under a few seconds.
- */
-void initialize() {
-  // Print our branding over your terminal :D
-  ez::ez_template_print();
-  pros::delay(500);  // Stop the user from doing anything while legacy ports configure
-
-  // Look at your horizontal tracking wheel and decide if it's in front of the midline of your robot or behind it
-  //  - change `back` to `front` if the tracking wheel is in front of the midline
-  //  - ignore this if you aren't using a horizontal tracker
-  // chassis.odom_tracker_back_set(&horiz_tracker);
-  // Look at your vertical tracking wheel and decide if it's to the left or right of the center of the robot
-  //  - change `left` to `right` if the tracking wheel is to the right of the centerline
-  //  - ignore this if you aren't using a vertical tracker
-//chassis.odom_tracker_left_set(&vertl);
-//chassis.odom_tracker_right_set(&vertr);
-
-  // Configure your chassis controls
-  chassis.opcontrol_curve_buttons_toggle(false);   // Enables modifying the controller curve with buttons on the joysticks
-  chassis.opcontrol_drive_activebrake_set(1);   // Sets the active brake kP. We recommend ~2.  0 will disable.
-  chassis.opcontrol_curve_default_set(1, 1);  // Defaults for curve. If using tank, only the first parameter is used. (Comment this line out if you have an SD card!)
-
-  // Set the drive to your own constants from autons.cpp!
-  default_constants();
-  init();
-  lift.tare_position();
-
-  // These are already defaulted to these buttons, but you can change the left/right curve buttons here!
-  // chassis.opcontrol_curve_buttons_left_set(pros::E_CONTROLLER_DIGITAL_LEFT, pros::E_CONTROLLER_DIGITAL_RIGHT);  // If using tank, only the left side is used.
-  // chassis.opcontrol_curve_buttons_right_set(pros::E_CONTROLLER_DIGITAL_Y, pros::E_CONTROLLER_DIGITAL_A);
-
-  // Autonomous Selector using LLEMU
-  ez::as::auton_selector.autons_add({
-//Auton("GOAL RUSH BLUE", goalrb),
-Auton("test", test),
-Auton("BLUE POSITIVE MATCH ",bluepm),
-Auton("RED POSITIVE MATCH",redpm),
-Auton("BLUE RING RUSH ",ringrb),
-Auton("RED RING RUSH ",ringrr),
-Auton("SKILLS",skills),
-
-  });
-  // Initialize chassis and auton selector
-  chassis.initialize();
-  ez::as::initialize();
-  master.rumble(chassis.drive_imu_calibrated() ? "." : "---");
-}
-pros::Task Lifttask(lift_task);
 /**
  * Runs while the robot is in the disabled state of Field Management System or
  * the VEX Competition Switch, following either autonomous or opcontrol. When
@@ -310,7 +314,7 @@ if(master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_L2)){
             liftPID.target_set(1900);
     }
 if(master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_LEFT)){
-            liftPID.target_set(-1000);
+            liftPID.target_set(-2000);
 }
   if(bumper.get_value() == true){
     lift.set_zero_position(0);
