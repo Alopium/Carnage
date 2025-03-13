@@ -9,6 +9,38 @@
 /////
 
 // Chassis constructor
+bool WrongColor;
+
+
+pros::Task colorSortTask([]() {
+  pros::delay(2000);
+  colorsort.set_led_pwm(100);
+  while (true) {
+    // Red Sorting 
+    if( ColorSort == 1){
+      if(colorsort.get_hue() < 40 && colorsort.get_hue() > 5){
+        WrongColor = true;
+      }
+    }
+    //Blue Sorting
+    if(ColorSort == 2){
+      if(colorsort.get_hue() < 230 && colorsort.get_hue() > 175){
+        WrongColor = true;
+      }
+    }
+    //Sort
+    if(WrongColor){
+      pros::delay(150);
+      setIntake(127);
+      pros::delay(90);
+      setIntake(-127);
+      WrongColor = false;
+    }
+    pros::delay(ez::util::DELAY_TIME);
+    }
+  }
+);
+
 ez::Drive chassis(
     // These are your drive motors, the first motor is used for sensing!
     {12, -13, -14},     // Left Chassis Ports (negative port will reverse it!)
@@ -64,15 +96,15 @@ void initialize() {
   // Autonomous Selector using LLEMU
   ez::as::auton_selector.autons_add({
 //Auton("GOAL RUSH BLUE", goalrb),
-Auton("RED SOLO AWP POS", skills),
+Auton("BLUE POSITIVE 1 X 3 ", sawpb),
+Auton("RED NEGATIVE 1 + 4", rednm),
+Auton("RED POSITIVE 1 X 3", sawpr),
+Auton("BLUE NEGATIVE 1 + 4", bluenm),
+/*Auton("test", test),
 Auton("test", test),
 Auton("test", test),
 Auton("test", test),
-Auton("test", test),
-Auton("test", test),
-Auton("test", test),
-Auton("test", test),
-Auton("test", test),
+Auton("test", test),*/
 Auton("SKILLS",skills),
 
   });
@@ -82,37 +114,6 @@ Auton("SKILLS",skills),
   master.rumble(chassis.drive_imu_calibrated() ? "." : "---");
 }
 pros::Task Lifttask(lift_task);
-bool WrongColor;
-
-
-pros::Task colorSortTask([]() {
-  pros::delay(2000);
-  colorsort.set_led_pwm(100);
-  while (true) {
-    // Red Sorting 
-    if( ColorSort == 1){
-      if(colorsort.get_hue() < 40 && colorsort.get_hue() > 5){
-        WrongColor = true;
-      }
-    }
-    //Blue Sorting
-    if(ColorSort == 2){
-      if(colorsort.get_hue() < 230 && colorsort.get_hue() > 175){
-        WrongColor = true;
-      }
-    }
-    //Sort
-    if(WrongColor){
-      pros::delay(168);
-      setIntake(127);
-      pros::delay(105);
-      setIntake(-127);
-      WrongColor = false;
-    }
-    pros::delay(ez::util::DELAY_TIME);
-    }
-  }
-);
 
 /**
  * Runs while the robot is in the disabled state of Field Management System or

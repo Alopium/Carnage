@@ -2,6 +2,7 @@
 #include "EZ-Template/util.hpp"
 #include "main.h"
 #include "pros/motors.h"
+#include "pros/optical.h"
 #include "pros/rtos.hpp"
 #include "subsystems.hpp"
 
@@ -24,15 +25,15 @@ void default_constants() {
   chassis.pid_heading_constants_set(16.0, 0.0, 25.0);        // Holds the robot straight while going forward without odom
   chassis.pid_turn_constants_set(3.61, 0,25, 15.0); // 1.6 5 3.61 25   // Turn in place constants
   chassis.pid_swing_constants_set(6.0, 0.0, 65.0);           // Swing constants
-  chassis.pid_odom_angular_constants_set(10, 0.05, 35 ); //10, 35   // Angular control for odom motions
-  chassis.pid_odom_boomerang_constants_set(10, 0.05, 35);  // 10, 15 Angular control for boomerang motions
+  chassis.pid_odom_angular_constants_set(10, 0.05, 45 ); //10, 35   // Angular control for odom motions
+  chassis.pid_odom_boomerang_constants_set(10, 0.05, 45);  // 10, 15 Angular control for boomerang motions
 
   // Exit conditions
   chassis.pid_turn_exit_condition_set(90, 3, 210, 7, 300, 350);
   chassis.pid_swing_exit_condition_set(90, 3, 210, 7, 300, 350);
   chassis.pid_drive_exit_condition_set(90, 1, 210, 3, 300, 350);
-  chassis.pid_odom_turn_exit_condition_set(90, 3, 220, 7, 310, 625);
-  chassis.pid_odom_drive_exit_condition_set(90, 1, 220, 3, 310, 625);
+  chassis.pid_odom_turn_exit_condition_set(90, 3, 220, 7, 315, 675);
+  chassis.pid_odom_drive_exit_condition_set(90, 1, 220, 3, 315, 675);
   chassis.pid_turn_chain_constant_set(3_deg);
   chassis.pid_swing_chain_constant_set(5_deg);
   chassis.pid_drive_chain_constant_set(3_in);
@@ -68,9 +69,53 @@ void bluepm(){
 }
 void bluenm(){
 // alliance plus 5 ring, ladder
+chassis.odom_xyt_set(15.2,-58,-113);
+clamps.set(true);
+ColorSort = 1;
+liftPID.target_set(1800);
+pros::delay(750);
+liftPID.target_set(0);
+chassis.pid_odom_set({{21, -22, -230},rev, 105});
+chassis.pid_wait();
+clamps.set(false);
+pros::delay(200);
+setIntake(-127);
+chassis.pid_turn_set(45, 90);
+chassis.pid_wait();
+chassis.pid_odom_set({{54, -6.1, -270}, fwd, 105});
+chassis.pid_wait();
+chassis.pid_odom_set({{47, -28}, fwd, 90});
+chassis.pid_wait();
+chassis.pid_odom_set({{10, -44, -90}, fwd, 110}); 
+pros::delay(300);
+setIntake(0);
+
 }
 void rednm(){
 // alliance plus 5 ring, ladder
+chassis.odom_xyt_set(-15.2,-58,113);
+clamps.set(true);
+ColorSort = 2;
+liftPID.target_set(1800);
+pros::delay(750);
+liftPID.target_set(0);
+chassis.pid_odom_set({{-21, -22, 230},rev, 105});
+chassis.pid_wait();
+clamps.set(false);
+pros::delay(200);
+setIntake(-127);
+chassis.pid_turn_set(-45, 90);
+chassis.pid_wait();
+chassis.pid_odom_set({{-54, -6.1, 270}, fwd, 105});
+chassis.pid_wait();
+chassis.pid_odom_set({{-47, -28}, fwd, 90});
+chassis.pid_wait();
+chassis.pid_odom_set({{-10, -44, 90}, fwd, 110}); 
+pros::delay(300);
+setIntake(0);
+/*pros::delay(200);
+unjam();
+setIntake(-127); */
 }
 
 
@@ -91,6 +136,50 @@ void goalrr(){
 
 }
 void sawpb(){
+  chassis.odom_turn_bias_set(0.92);
+  ColorSort = 1;
+  clamps.set(true);
+chassis.odom_xyt_set(-15.2,-58,113);
+
+
+liftPID.target_set(1800);
+pros::delay(750);
+liftPID.target_set(0);
+setIntake(-127);
+chassis.pid_odom_set({{-49, -6, 0}, fwd, 120});
+pros::delay(2000);
+doinkr.set(true);
+pros::delay(500);
+setIntake(0);
+pros::delay(100);
+doinkrc.set(true);
+pros::delay(400);
+chassis.pid_drive_set(-38, 127);
+chassis.pid_wait();
+chassis.pid_odom_set({{-22, -22, -152}, rev, 110});
+pros::delay(600);
+doinkrc.set(false);
+pros::delay(500);
+doinkr.set(false);
+chassis.pid_wait();
+clamps.set(false);
+pros::delay(200);
+chassis.pid_drive_set(4, 115);
+pros::delay(300);
+setIntake(-127);
+chassis.pid_odom_set({{-12, -43, 138}, fwd, 127});
+chassis.pid_wait();
+doinkl.set(true);
+pros::delay(300);
+chassis.pid_turn_set(152, 115);
+chassis.pid_wait();
+doinkl.set(false);
+chassis.pid_drive_set(13, 115);
+
+
+
+
+
 
 }
 void sawpr(){
@@ -138,68 +227,61 @@ clamps.set(false);
 }
 void skills(){
 //alliance stake 
+  liftPID.target_set(0);
   ColorSort =2;
   chassis.odom_xyt_set(0,-64,0);
   liftPID.target_set(0);
   clamps.set(true);
   setIntake(-127);
   pros::delay(700);
-  chassis.pid_drive_set(11.52 ,110);
+  chassis.pid_odom_set({{0, -52}, fwd, 110});
+  //chassis.pid_drive_set(11.45 ,110);
   chassis.pid_wait();
-  setIntake(127);
 //clamp 1
-//  chassis.pid_odom_set({{0, -52},fwd, 70});
-//  chassis.pid_wait();
-//  chassis.pid_turn_set(-89, 100);
-//  chassis.pid_wait();
-  chassis.pid_odom_set({{24.5,-52, 90},rev, 72});
-  pros::delay(200);
-  setIntake(-127);
+  chassis.pid_odom_set({{24.8,-52, 90},rev, 75});
   chassis.pid_wait();
   clamps.set(false);
-  chassis.pid_odom_set({{24,-24}, fwd, 110});
+  chassis.pid_odom_set({{24,-24}, fwd, 127});
   chassis.pid_wait();
-  unjam();
-  chassis.pid_odom_set({{44, -2}, fwd, 110});
+  chassis.pid_odom_set({{44, -2}, fwd, 127});
   chassis.pid_wait();
   setIntake(-127);
-  chassis.pid_odom_set({{48, 30}, fwd, 110});
+  chassis.pid_odom_set({{48, 30}, fwd, 127});
   chassis.pid_wait();
-  chassis.pid_odom_set({{44,-2}, rev, 110});
+  chassis.pid_odom_set({{44,-2.5}, rev, 127});
   chassis.pid_wait();
-  liftPID.target_set(305);
-  chassis.pid_turn_set(90, 110);
+  liftPID.target_set(288);
+  chassis.pid_turn_set(89, 110);
   chassis.pid_wait();
-  chassis.pid_odom_set({{61, -0.55}, fwd, 40});
+  //chassis.pid_drive_set(12, 50);
+  chassis.pid_odom_set({{61.25, -0.69}, fwd, 34});
   chassis.pid_wait();
-  pros::delay(550);
+  pros::delay(600);
   //loadlb();
-  //pros::delay(300);
   setIntake(0);
   liftPID.target_set(2000);
   pros::delay(600);
-  chassis.pid_drive_set(-5, 110);
-  pros::delay(300);
-  chassis.pid_drive_set(6, 110);
-  pros::delay(300);
-  chassis.pid_drive_set(-8,110);
-  chassis.pid_wait();
-  liftPID.target_set(0);
   setIntake(-127);
-  chassis.pid_odom_set({{51, -30}, fwd, 56});
+  chassis.pid_drive_set(-10,115);
   chassis.pid_wait();
-  chassis.pid_odom_set({{51, -56}, fwd, 42});
+  liftPID.target_set(-50);
+  chassis.pid_odom_set({{49.8, -20}, fwd, 110});
   chassis.pid_wait();
-  pros::delay(400);
-  chassis.pid_odom_set({{42, -54}, rev, 80});
+  chassis.pid_odom_set({{49.8, -62}, fwd, 92});
   chassis.pid_wait();
-  chassis.pid_odom_set({{64, -48}, fwd, 90});
+  pros::delay(300);
+  chassis.pid_odom_set({{42, -54}, rev, 115});
+  chassis.pid_wait();
   unjam();
+  setIntake(-127);
+  chassis.pid_odom_set({{61, -49}, fwd, 115});
+  setIntake(-127);
   chassis.pid_wait();
   chassis.pid_turn_set(-30, 110);
+  unjam();
   setIntake(-127);
   chassis.pid_wait();
-  chassis.pid_odom_set({{64, -62.5}, rev, 80});
+  chassis.pid_odom_set({{62, -60}, rev, 85});
   chassis.pid_wait();
   clamps.set(true);
   setIntake(0);
@@ -207,60 +289,64 @@ void skills(){
 
 
 // CLAMP 2 
-  chassis.pid_odom_set({{8, -50}, fwd, 127});
+  chassis.pid_odom_set({{6, -51.5}, fwd, 115});
   chassis.pid_wait();
-  chassis.pid_turn_set(-90, 100);
-  chassis.pid_wait();
-  chassis.pid_odom_set({{-24.7,-52.2, -90},rev, 75});
+  //chassis.pid_turn_set(-90, 100);
+  //chassis.pid_wait();
+  chassis.pid_odom_set({{-24.7,-54},rev, 75});
   chassis.pid_wait();
   clamps.set(false);
   setIntake(-127);
-  chassis.pid_odom_set({{-24,-24}, fwd, 110});
+  chassis.pid_odom_set({{-18,-24}, fwd, 127});
   chassis.pid_wait();
-  chassis.pid_odom_set({{-44, -2}, fwd, 110});
+  chassis.pid_odom_set({{-34, -2}, fwd, 127});
   chassis.pid_wait();
-  chassis.pid_odom_set({{-48, 30}, fwd, 110});
+  chassis.pid_odom_set({{-42, 30}, fwd, 127});
   chassis.pid_wait();
-  chassis.pid_odom_set({{-44,-2}, rev, 110});
+  chassis.pid_odom_set({{-36,-7}, rev, 127});
   chassis.pid_wait();
-  liftPID.target_set(305);
-  chassis.pid_turn_set(-90, 110);
+  liftPID.target_set(288);
+  chassis.pid_turn_set(-89, 110);
   chassis.pid_wait();
-  chassis.pid_odom_set({{-61, -0.5}, fwd, 40});
+  chassis.pid_odom_set({{-58, -4.5}, fwd, 34});
   chassis.pid_wait();
-  pros::delay(550);
-  //loadlb();
-  //pros::delay(300);
+  pros::delay(600);
   setIntake(0);
   liftPID.target_set(2000);
   pros::delay(600);
-  chassis.pid_drive_set(-5, 110);
-  pros::delay(300);
-  chassis.pid_drive_set(6, 110);
-  pros::delay(300);
-  chassis.pid_drive_set(-8,110);
+  setIntake(-127);
+  chassis.pid_drive_set(-12,110);
   chassis.pid_wait();
   liftPID.target_set(0);
+  chassis.pid_odom_set({{-40, -24}, fwd, 110});
+  chassis.pid_wait();
+  chassis.pid_odom_set({{-40, -60}, fwd, 75});
+  chassis.pid_wait();
+  chassis.pid_odom_set({{-32, -54}, rev, 100});
+  chassis.pid_wait();
+  unjam();
   setIntake(-127);
-  chassis.pid_odom_set({{-51, -30}, fwd, 56});
-  chassis.pid_wait();
-  chassis.pid_odom_set({{-51, -56}, fwd, 42});
-  chassis.pid_wait();
-  pros::delay(400);
-  chassis.pid_odom_set({{-42, -54}, rev, 80});
-  chassis.pid_wait();
-  chassis.pid_odom_set({{-62, -48}, fwd, 90});
+  chassis.pid_odom_set({{-50, -54}, fwd, 110});
   unjam();
   chassis.pid_wait();
   chassis.pid_turn_set(30, 110);
   setIntake(-127);
   chassis.pid_wait();
-  chassis.pid_odom_set({{-63, -63}, rev, 80});
+  chassis.pid_odom_set({{-56, -63}, rev, 80});
   chassis.pid_wait();
   clamps.set(true);
   setIntake(0);
+// END OF CORNER 2 
+  chassis.pid_odom_set({{-26, 45}, fwd, 127});
+  setIntake(-127);
+  chassis.pid_wait();
+  chassis.pid_odom_set({{-64, 64}, fwd, 110});
+  chassis.pid_wait();
+  chassis.pid_odom_set({{4, 52}, rev, 110});
+  chassis.pid_wait();
+  clamps.set(false);
+  chassis.pid_odom_set({{64, 64}, rev, 110});
 
-// END 
 
 }
 

@@ -13,7 +13,9 @@ void setIntake(int intakePower){
 void setlift(int liftpower){
     lift.move(liftpower);
 }
-
+void setroller(int rollerpower){
+    intake.move(rollerpower);
+}
 
 
 ez::PID liftPID{0.6,0,0,0,"Lift"};
@@ -32,7 +34,6 @@ void lift_task(){
         pros::delay(ez::util::DELAY_TIME);
     }
 }
-
 
 
 

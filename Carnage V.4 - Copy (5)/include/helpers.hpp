@@ -17,10 +17,11 @@ extern bool isRed;
 extern int IntakeSpeed;
 inline void unjam (){
     setIntake(127);
-    pros::delay(150);
+    pros::delay(125);
     setIntake(-127);
-    pros::delay(150);
+    pros::delay(125);
     setIntake(0);
+    pros::delay(75);
 
 
 };
@@ -30,9 +31,5 @@ inline void loadlb(){
     setIntake(-127);
     pros::delay(125);
     setIntake(0);
-    pros::delay(125);
-    setIntake(-127);
-    pros::delay(125);
-    setIntake(0);
-
 }
+void setroller(int rollerpower);
