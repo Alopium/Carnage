@@ -75,28 +75,24 @@ ColorSort = 1;
 liftPID.target_set(1800);
 pros::delay(750);
 liftPID.target_set(0);
-chassis.pid_odom_set({{22, -23, -225},rev, 115});
+setIntake(-127);
+chassis.pid_odom_set({{21, -22, 149},rev, 115});
 chassis.pid_wait();
 pros::delay(100);
 clamps.set(false);
 pros::delay(150);
-chassis.pid_turn_set(45, 90);
+chassis.pid_turn_set(45, 110);
 chassis.pid_wait();
-setIntake(-127);
 pros::delay(200);
-chassis.pid_odom_set({{54, -6.8, -270}, fwd, 118});
+chassis.pid_odom_set({{54, -6.8, 90}, fwd, 124});
 chassis.pid_wait();
 chassis.pid_odom_set({{47, -28}, fwd, 110});
 chassis.pid_wait();
-chassis.pid_odom_set({{12.5, -40.8, -90}, fwd, 110}); 
+chassis.pid_odom_set({{-12, -50, -90}, fwd, 110}); 
 chassis.pid_wait();
-setIntake(0);
-pros::delay(600);
-doinkl.set(true);
-pros::delay(450);
-doinkl.set(false);
-setIntake(-127);
-chassis.pid_odom_set({{2, -24, 0}, fwd, 90});
+pros::delay(500);
+chassis.pid_odom_set({{2, -20, 0}, fwd, 110}); 
+liftPID.target_set(1800);
 
 }
 void rednm(){
