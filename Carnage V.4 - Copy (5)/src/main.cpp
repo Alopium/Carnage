@@ -96,10 +96,10 @@ void initialize() {
   // Autonomous Selector using LLEMU
   ez::as::auton_selector.autons_add({
 //Auton("GOAL RUSH BLUE", goalrb),
+Auton("BLUE NEGATIVE 1 + 4", bluenm),
+Auton("RED POSITIVE 1 X 3", sawpr),
 Auton("BLUE POSITIVE 1 X 3 ", sawpb),
 Auton("RED NEGATIVE 1 + 4", rednm),
-Auton("RED POSITIVE 1 X 3", sawpr),
-Auton("BLUE NEGATIVE 1 + 4", bluenm),
 /*Auton("test", test),
 Auton("test", test),
 Auton("test", test),
