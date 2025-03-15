@@ -24,7 +24,7 @@ pros::Task colorSortTask([]() {
     }
     //Blue Sorting
     if(ColorSort == 2){
-      if(colorsort.get_hue() < 230 && colorsort.get_hue() > 175){
+      if(colorsort.get_hue() < 240 && colorsort.get_hue() > 170){
         WrongColor = true;
       }
     }
@@ -96,10 +96,11 @@ void initialize() {
   // Autonomous Selector using LLEMU
   ez::as::auton_selector.autons_add({
 //Auton("GOAL RUSH BLUE", goalrb),
+Auton("SKILLS",skills),
+Auton("RED NEGATIVE 1 + 4", rednm),
 Auton("BLUE NEGATIVE 1 + 4", bluenm),
 Auton("RED POSITIVE 1 X 3", sawpr),
 Auton("BLUE POSITIVE 1 X 3 ", sawpb),
-Auton("RED NEGATIVE 1 + 4", rednm),
 /*Auton("test", test),
 Auton("test", test),
 Auton("test", test),
