@@ -97,6 +97,7 @@ void initialize() {
   ez::as::auton_selector.autons_add({
 //Auton("GOAL RUSH BLUE", goalrb),
 //Auton("SKILLS",skills),
+Auton("test", test),
 Auton("RED NEGATIVE", rednm),
 Auton("RED POSITIVE", sawpr),
 Auton("BLUE NEGATIVE", bluenm),
