@@ -133,12 +133,38 @@ void ringrr(){
 // rush stack, 6 ring and corner, no alliance
 
 }
-void goalrb(){
+void truegoalb(){ 
 // 2 on 2, one near corner, one in clamp
 
 }
-void goalrr(){
+void truegoalr(){
 // 2 on 2, one near corner, one in clamp
+chassis.odom_turn_bias_set(0.9);
+chassis.odom_xyt_set(62, -58, 0);
+ColorSort = 2;
+clamps.set(true);
+chassis.pid_odom_set({{44, -7, -16}, fwd, 127});
+setIntake(-127);
+pros::delay(300);
+doinkr.set(true);
+pros::delay(1250);
+setIntake(0);
+pros::delay(100);
+doinkrc.set(true);
+pros::delay(75);
+chassis.pid_drive_set(-28, 127);
+pros::delay(600);
+doinkrc.set(false);
+chassis.pid_wait();
+chassis.pid_odom_set({{51, -14, 195}, rev, 110}); //52, -14, 195
+chassis.pid_wait();
+clamps.set(false);
+pros::delay(200);
+setIntake(-127);
+chassis.pid_drive_set(12, 110);
+
+
+
 
 }
 void sawpb(){
@@ -311,16 +337,16 @@ void skills(){
   pros::delay(200);
   clamps.set(true);
   unjam();
-  chassis.pid_drive_set(4, 110);
+  chassis.pid_drive_set(8, 110);
   //END OF CORNER 1 
 
 
 // CLAMP 2 
-  chassis.pid_odom_set({{6, -51.3}, fwd, 115});
+  chassis.pid_odom_set({{6, -50}, fwd, 115});
   chassis.pid_wait();
   chassis.pid_turn_set(-90, 110);
   chassis.pid_wait();
-  chassis.pid_odom_set({{-24.8,-51.3},rev, 85});
+  chassis.pid_odom_set({{-24.8,-50},rev, 85});
   chassis.pid_wait();
   clamps.set(false);
   setIntake(-127);
@@ -330,9 +356,10 @@ void skills(){
   chassis.pid_wait();
   chassis.pid_odom_set({{-42, 30}, fwd, 127});
   chassis.pid_wait();
-  chassis.pid_odom_set({{-40,-7}, rev, 127});
+  chassis.pid_odom_set({{-42,-7}, rev, 127});
   chassis.pid_wait();
   chassis.pid_turn_set(180, 110);
+  chassis.pid_wait();
   pros::delay(250);
 /*  liftPID.target_set(268);
   pros::delay(100);
@@ -369,8 +396,10 @@ void skills(){
   chassis.pid_odom_set({{-58, -64}, rev, 110});
   chassis.pid_wait();
   clamps.set(true);
-  setIntake(0);
+  unjam();
 // END OF CORNER 2 
+  chassis.pid_odom_set({{-38, 0}, fwd, 127});
+  chassis.pid_wait();
   chassis.pid_odom_set({{-7, 54}, fwd, 127});
   setIntake(-127);
   chassis.pid_wait();
@@ -388,6 +417,8 @@ void skills(){
   chassis.pid_wait();
   pros::delay(200);
   chassis.pid_turn_set(-145, 110);
+  chassis.pid_wait();
+  chassis.pid_drive_set(6, 127);
   chassis.pid_wait();
   chassis.pid_odom_set({{68, 68}, rev, 127});
   chassis.pid_wait();

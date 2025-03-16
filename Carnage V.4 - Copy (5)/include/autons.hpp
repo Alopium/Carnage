@@ -10,6 +10,8 @@ void rednm();
 void sawpb();
 void sawpr();
 void skills();
+void truegoalr();
+void truegoalb();
 
 
 
