@@ -135,7 +135,44 @@ void ringrr(){
 }
 void truegoalb(){ 
 // 2 on 2, one near corner, one in clamp
-
+chassis.odom_turn_bias_set(0.9);
+chassis.odom_xyt_set(-62, -58, 0);
+ColorSort = 1;
+clamps.set(true);
+chassis.pid_odom_set({{-44, -6.8, 17}, fwd, 127});
+setIntake(-127);
+pros::delay(300);
+doinkl.set(true);
+pros::delay(1250);
+setIntake(0);
+pros::delay(80);
+doinklc.set(true);
+pros::delay(75);
+chassis.pid_drive_set(-28, 127);
+pros::delay(600);
+doinklc.set(false);
+chassis.pid_wait();
+chassis.pid_odom_set({{-52, -14, -163}, rev, 127}); //52, -14, 195
+doinkl.set(false);
+chassis.pid_wait();
+clamps.set(false);
+setIntake(-127);
+chassis.pid_drive_set(10, 127);
+chassis.pid_wait_quick();
+chassis.pid_turn_set(17, 127);
+chassis.pid_wait_quick();
+chassis.pid_drive_set(-26, 127);
+chassis.pid_wait();
+clamps.set(true);
+chassis.pid_drive_set(10, 127);
+chassis.pid_wait_quick();
+chassis.pid_turn_set(-90, 127);
+chassis.pid_wait();
+chassis.pid_odom_set({{-22, -32, -90}, rev, 127});
+chassis.pid_wait();
+clamps.set(false);
+setIntake(-127);
+chassis.pid_odom_set({{-65, -66, -90}, fwd, 127});
 }
 void truegoalr(){
 // 2 on 2, one near corner, one in clamp
@@ -147,21 +184,39 @@ chassis.pid_odom_set({{44, -7, -16}, fwd, 127});
 setIntake(-127);
 pros::delay(300);
 doinkr.set(true);
-pros::delay(1250);
+pros::delay(1240);
 setIntake(0);
-pros::delay(100);
+pros::delay(80);
 doinkrc.set(true);
 pros::delay(75);
 chassis.pid_drive_set(-28, 127);
 pros::delay(600);
 doinkrc.set(false);
 chassis.pid_wait();
-chassis.pid_odom_set({{51, -14, 195}, rev, 110}); //52, -14, 195
+chassis.pid_odom_set({{51.8, -14, 162}, rev, 127}); //52, -14, 195
+doinkr.set(false);
 chassis.pid_wait();
 clamps.set(false);
-pros::delay(200);
+pros::delay(175);
 setIntake(-127);
-chassis.pid_drive_set(12, 110);
+chassis.pid_drive_set(10, 127);
+chassis.pid_wait_quick();
+chassis.pid_turn_set(-17, 127);
+chassis.pid_wait_quick();
+chassis.pid_drive_set(-26, 127);
+chassis.pid_wait();
+clamps.set(true);
+chassis.pid_drive_set(10, 127);
+chassis.pid_wait_quick();
+chassis.pid_turn_set(90, 127);
+chassis.pid_wait();
+chassis.pid_odom_set({{18, -32, 90}, rev, 127});
+chassis.pid_wait();
+clamps.set(false);
+setIntake(-127);
+chassis.pid_odom_set({{64, -64, 90}, fwd, 127});
+//doinkr.set(true);
+
 
 
 
