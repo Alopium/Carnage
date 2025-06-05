@@ -9,10 +9,8 @@
 /////
 
 // Chassis constructor
-bool WrongColor;
-
-
-pros::Task colorSortTask([]() {
+//bool WrongColor;
+/*pros::Task colorSortTask([]() {
   pros::delay(2000);
   colorsort.set_led_pwm(100);
   while (true) {
@@ -39,7 +37,8 @@ pros::Task colorSortTask([]() {
     pros::delay(ez::util::DELAY_TIME);
     }
   }
-);
+);*/
+
 
 ez::Drive chassis(
     // These are your drive motors, the first motor is used for sensing!
@@ -101,8 +100,6 @@ Auton("LEFT RED", rednm),
 Auton("RIGHT RED", sawpr),
 Auton("LEFT BLUE", bluenm),
 Auton("RIGHT BLUE", sawpb),
-Auton("", truegoalr),
-Auton("", truegoalb),
 //Auton("SKILLS",skills),
 
   });
@@ -111,7 +108,6 @@ Auton("", truegoalb),
   ez::as::initialize();
   master.rumble(chassis.drive_imu_calibrated() ? "." : "---");
 }
-pros::Task Lifttask(lift_task);
 
 /**
  * Runs while the robot is in the disabled state of Field Management System or
@@ -275,9 +271,6 @@ void opcontrol() {
 
   while (true) {    // Gives you some extras to make EZ-Template ezier
     ez_template_extras();
-    if(!WrongColor){
-      setIntake((master.get_digital(pros::E_CONTROLLER_DIGITAL_R2)-master.get_digital(pros::E_CONTROLLER_DIGITAL_R1))*-127);
-  }      
     //chassis.opcontrol_tank();  // Tank control
     chassis.opcontrol_arcade_standard(ez::SPLIT);   // Standard split arcade
     // chassis.opcontrol_arcade_standard(ez::SINGLE);  // Standard single arcade
@@ -287,38 +280,8 @@ void opcontrol() {
     // . . .
     // Put more user control code here!
     // . . .
-    colorsort.set_integration_time(3);
-    if (master.get_digital(pros::E_CONTROLLER_DIGITAL_B)){
-      clamps.set(true);
-    }
-    else {
-    clamps.set(false);
-    }
-    if(master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_X)&& ColorSort == 1){
-      ColorSort = 2;
-    }
-    if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_A)&& ColorSort == 2){
-      ColorSort = 1;
-    }
-    doinkr.button_toggle(master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_DOWN));
-    doinkl.button_toggle(master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_Y));
-    
-  if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_RIGHT)){
-            liftPID.target_set(332);
-    };
-    if(master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_L1)){
-            liftPID.target_set(-1000);
-    }
-if(master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_L2)){
-            liftPID.target_set(1900);
-    }
-if(master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_LEFT)){
-            liftPID.target_set(-2000);
-}
-  if(bumper.get_value() == true){
-    lift.set_zero_position(0);
-    liftPID.target_set(0);
-  }
+
+
     pros::delay(ez::util::DELAY_TIME);  // This is used for timer calculations!  Keep this ez::util::DELAY_TIME
   }
 }

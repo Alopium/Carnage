@@ -5,8 +5,8 @@
 
 
 void setIntake(int intakePower){
-    intake.move(intakePower);
-    hook.move(intakePower);
+    intakeb.move(intakePower);
+    intaket.move(intakePower);
 }
 
 //lift

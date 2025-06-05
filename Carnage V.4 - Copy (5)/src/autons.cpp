@@ -112,6 +112,7 @@ chassis.odom_xyt_set(15.2,-58,-113);
 }
 void skills(){
 //
+chassis.odom_xyt_set(15.2,-58,-113);
 
 
 }
