@@ -7,15 +7,15 @@
 
 
 
-inline pros::Motor intake(20);
-inline pros::Motor hook(21);
+inline pros::Motor intake(0);
+inline pros::Motor hook(0);
 inline ez::Piston clamps('C');
 inline ez::Piston doinkr('E');
-inline pros::Motor lift(-1);
+inline pros::Motor lift(0);
 inline pros::adi::DigitalIn bumper('A');
 inline ez::Piston doinkl('F');
 inline ez::Piston doinklc('D');
 inline ez::Piston doinkrc('B');
-inline pros::Optical colorsort(7);
+inline pros::Optical colorsort(0);
 inline int ColorSort = 2;
 
