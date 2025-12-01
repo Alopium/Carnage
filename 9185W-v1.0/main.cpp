@@ -1,7 +1,12 @@
 #include "main.h"
 #include "EZ-Template/tracking_wheel.hpp"
+#include "EZ-Template/util.hpp"
 #include "autons.hpp"
+#include "liblvgl/core/lv_obj.h"
+#include "liblvgl/misc/lv_style.h"
+#include "liblvgl/misc/lv_types.h"
 #include "pros/misc.h"
+#include "pros/rtos.hpp"
 
 /////
 // For installation, upgrading, documentations, and tutorials, check out our website!
@@ -42,10 +47,10 @@
 
 ez::Drive chassis(
     // These are your drive motors, the first motor is used for sensing!
-    {0,0,0},   //5, -7, -9  // Left Chassis Ports (negative port will reverse it!) -16, 17, -18   -14, 15, -16
-    {0,0,0},  // 1, 2, -3 Right Chassis Ports (negative port will reverse it!) 11, -12, 2    4, -5, 6
+    {-17,16,-15},   //5, -7, -9  // Left Chassis Ports (negative port will reverse it!) -16, 17, -18   -14, 15, -16
+    {12,-13,14},  // 1, 2, -3 Right Chassis Ports (negative port will reverse it!) 11, -12, 2    4, -5, 6
     0,      // IMU Port
-    3.25,  // Wheel Diameter (Remember, 4" wheels without screw holes are actually 4.125!)
+    4,  // Wheel Diameter (Remember, 4" wheels without screw holes are actually 4.125!)
     480);   // Wheel RPM = cartridge * (motor gear / wheel gear)
 
 // Uncomment the trackers you're using here!
@@ -62,6 +67,21 @@ ez::Drive chassis(
  * All other competition modes are blocked by initialize; it is recommended
  * to keep execution time for this mode under a few seconds.
  */
+ /*lv_obj_t * myButton;
+ lv_obj_t * myButtonLabel;
+ lv_obj_t * myLabel;
+  lv_style_t myButtonStyleREL; //style for released 
+  lv_style_t myButtonStylepR; //style for pressed
+  static lv_res_t btn_click_action(lv_obj_t * btn){
+    uint8_t id = lv_obj_get_user_data(btn);
+    if (id == 0){
+      char buffer[100];
+      sprintf(buffer, "button was clicked %i milliseconds from the start", pros::millis());
+      lv_label_set_text(myLabel, buffer);
+    }
+    return LV_RES_OK;
+  } */
+
 void initialize() {
   // Print our branding over your terminal :D
   ez::ez_template_print();
@@ -96,10 +116,6 @@ void initialize() {
 //Auton("GOAL RUSH BLUE", goalrb),
 //Auton("SKILLS",skills),
 Auton("test", test),
-Auton("LEFT RED", rednm),
-Auton("RIGHT RED", sawpr),
-Auton("LEFT BLUE", bluenm),
-Auton("RIGHT BLUE", sawpb),
 //Auton("SKILLS",skills),
 
   });
@@ -281,7 +297,24 @@ void opcontrol() {
     // Put more user control code here!
     // . . .
 
+  if (master.get_digital(pros::E_CONTROLLER_DIGITAL_R1)){
+    setIntake(127);
+  }
+  else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) {
+    setIntake(-127);
+  }
+  else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_L1)){
+    setIntake(78);
+  }
+  else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_L2)){
+    setIntake(-78);
+  }
+  else {
+  setIntake(0);
+  }
 
+
+    //setintakeb(master.get_digital(pros::E_CONTROLLER_DIGITAL_L1)-master.get_digital(pros::E_CONTROLLER_DIGITAL_L2)*127);
     pros::delay(ez::util::DELAY_TIME);  // This is used for timer calculations!  Keep this ez::util::DELAY_TIME
   }
 }

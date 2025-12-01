@@ -6,6 +6,7 @@
 #ifndef LV_OBJ_TREE_H
 #define LV_OBJ_TREE_H
 
+#include <sys/_stdint.h>
 #ifdef __cplusplus
 extern "C" {
 #endif
