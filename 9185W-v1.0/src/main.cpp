@@ -113,6 +113,8 @@ chassis.odom_tracker_back_set(&horzb);
 
   // Autonomous Selector using LLEMU
   ez::as::auton_selector.autons_add({
+//Auton("TEST", test),
+Auton("HIGH GOAL(LEFT)", highgoalb),
 Auton("SKILLS", skills),
 Auton("HIGH GOAL(LEFT)", highgoalb),
 Auton("LOW GOAL(RIGHT)", lowgoalb),
@@ -299,6 +301,8 @@ void opcontrol() {
     // Put more user control code here!
     // . . .
     hood.button_toggle(master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_R1));
+    descore.button_toggle(master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_R2));
+    alignr.button_toggle(master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_B));
    // freaky.button_toggle(master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_A));
   if (master.get_digital(pros::E_CONTROLLER_DIGITAL_L1)){
     setScore(-127);
@@ -307,7 +311,7 @@ void opcontrol() {
     setScore(127);
   }
   else{
-  setScore(0);
+  setScore(0); 
   }
 
 
