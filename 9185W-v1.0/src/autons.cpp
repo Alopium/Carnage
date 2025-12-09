@@ -1,9 +1,11 @@
 #include "autons.hpp"
+#include <stdlib.h>
 #include <iomanip>
 #include <set>
 #include "EZ-Template/slew.hpp"
 #include "EZ-Template/util.hpp"
 #include "main.h"
+#include "pros/device.hpp"
 #include "pros/motors.h"
 #include "pros/optical.h"
 #include "pros/rtos.hpp"
@@ -24,17 +26,18 @@ const int SWING_SPEED = 110;
 ///
 void default_constants() {
   // P, I, D, and Start I
-  chassis.pid_drive_constants_set(25, 0.08, 40);   // Fwd/rev constants, used for odom and non odom motions
-  chassis.pid_heading_constants_set(11.0, 0.0, 23.0);        // Holds the robot straight while going forward without odom
-  chassis.pid_turn_constants_set(3, 0.03,20, 15.0); // 1 Turn in place constants
+  chassis.pid_drive_constants_forward_set(20, 0.05, 65);   // Fwd/rev constants, used for odom and non odom motions
+  chassis.pid_drive_constants_backward_set(20, 0.05, 80);   // Fwd/rev constants, used for odom and non odom motions
+  chassis.pid_heading_constants_set(12.0, 0.0, 23.0);        // Holds the robot straight while going forward without odom
+  chassis.pid_turn_constants_set(3, 0.05,20, 15.0); // 1 Turn in place constants
   chassis.pid_swing_constants_set(6.0, 0.0, 65.0);           // Swing constants
   chassis.pid_odom_angular_constants_set(3, 0, 0 ); //  // Angular control for odom motions
   chassis.pid_odom_boomerang_constants_set(0, 0, 0);  // Angular control for boomerang motions
 
   // Exit conditions
-  chassis.pid_turn_exit_condition_set(90, 3, 250, 7, 450, 450);
-  chassis.pid_swing_exit_condition_set(90, 3, 250, 7, 450, 450);
-  chassis.pid_drive_exit_condition_set(90, 1, 250, 3, 450, 450);
+  chassis.pid_turn_exit_condition_set(90, 3, 225, 7, 440, 440);
+  chassis.pid_swing_exit_condition_set(90, 3, 225, 7, 440, 440);
+  chassis.pid_drive_exit_condition_set(90, 1, 225, 3, 450, 450);
   chassis.pid_odom_turn_exit_condition_set(90, 3, 250, 7, 500, 750);
   chassis.pid_odom_drive_exit_condition_set(90, 1, 250, 3, 500, 750);
   chassis.pid_turn_chain_constant_set(3_deg);
@@ -110,16 +113,16 @@ void lowgoalb(){
   pros::delay(500);
   chassis.pid_turn_set(-45, 110);
   chassis.pid_wait();
-  chassis.pid_drive_set(11, 110);
+  chassis.pid_drive_set(10, 110);
   setScore(0);
   hood.set(true);
   pros::delay(150);
   setScore(110);
   pros::delay(1500);
   setScore(0);
-  chassis.pid_drive_set(-46,100);
+  chassis.pid_drive_set(-46,100, true);
   chassis.pid_wait();
-  chassis.pid_turn_set(183,90);
+  chassis.pid_turn_set(180,90, true);
   hood.set(false);
   chassis.pid_wait();
   setScore(-127);
@@ -132,12 +135,17 @@ void lowgoalb(){
   chassis.pid_drive_set(-28, 100);
   chassis.pid_wait();
   hood.set(true);
-  pros::delay(3000);
-  chassis.pid_drive_set(28,110);
+  pros::delay(2000);
+  chassis.pid_drive_set(4, 110);
   chassis.pid_wait();
-  ballget();
-  ballget();
-  ballget();
+  chassis.pid_turn_set(-90,127);
+  chassis.pid_wait();
+  chassis.pid_drive_set(11, 110);
+  descore.set(true);
+  chassis.pid_wait();
+  chassis.pid_turn_set(-181,127);
+  chassis.pid_wait();
+  chassis.pid_drive_set(-15, 120);
 }
 void highgoalr(){
   chassis.pid_drive_set(15, 100, true);
@@ -178,7 +186,7 @@ void highgoalr(){
   ballget();
 }
 void highgoalb(){
-  chassis.pid_drive_set(15, 100, true);
+chassis.pid_drive_set(15, 100, true);
   chassis.pid_wait();
   chassis.pid_turn_set(-25, 110);
   chassis.pid_wait();
@@ -193,12 +201,12 @@ void highgoalb(){
   hood.set(true);
   chassis.pid_wait();
   setScore(-127);
-  pros::delay(800);
+  pros::delay(500);
   setScore(0);
-  chassis.pid_drive_set(47,100);
+  chassis.pid_drive_set(44,100);
   hood.set(false);
   chassis.pid_wait();
-  chassis.pid_turn_set(-181,90);
+  chassis.pid_turn_set(-180,90);
   chassis.pid_wait();
   setScore(-127);
   chassis.pid_drive_set(12, 70); 
@@ -206,16 +214,22 @@ void highgoalb(){
   ballget();
   ballget();
   chassis.pid_wait();
-  chassis.pid_drive_set(-30, 100);
+  chassis.pid_drive_set(-28, 100);
   chassis.pid_wait();
   hood.set(true); 
-  pros::delay(3000);
-  hood.set(false);
-  chassis.pid_drive_set(28,110);
+  pros::delay(1800);
+  chassis.pid_drive_set(4, 110);
   chassis.pid_wait();
-  ballget();
-  ballget();
-  ballget();
+  chassis.pid_turn_set(-90,90);
+  chassis.pid_wait();
+  chassis.pid_drive_set(12, 127);
+  descore.set(true);
+  chassis.pid_wait();
+  chassis.pid_turn_set(-180,127);
+  chassis.pid_wait();
+  chassis.pid_drive_set(-15, 127);
+
+
 }
 void solowpr(){
   //
@@ -226,6 +240,138 @@ void solowpb(){
   chassis.pid_drive_set(24, 110);
 }
 void skills(){
+  /*alignr.set(true);
+  chassis.pid_drive_set(28, 120);
+  chassis.pid_wait();
+  chassis.pid_turn_set(90,120);
+  chassis.pid_wait();
+  setScore(-127);
+  chassis.pid_drive_set(6,100);
+  chassis.pid_wait();
+  ballget();
+  ballget();
+  ballget();
+  ballget();
+  ballget();
+  pros::delay(100);
+  ballget();
+  ballget();
+  chassis.pid_drive_set(-6,120);
+  chassis.pid_wait();
+  setScore(0);
+  chassis.pid_turn_set(-45,110);
+  chassis.pid_wait();
+  chassis.pid_drive_set(21,120, true);
+  chassis.pid_wait();
+  chassis.pid_turn_set(-87,120);
+  chassis.pid_wait();
+  chassis.pid_drive_set(66,120, true);
+  chassis.pid_wait();
+  chassis.pid_turn_set(-140,120);
+  chassis.pid_wait();
+  chassis.pid_drive_set(17.5,120);
+  chassis.pid_wait();
+  chassis.pid_turn_set(-90,120);
+  chassis.pid_wait();
+  chassis.pid_drive_set(-11,110);
+  chassis.pid_wait();
+  hood.set(true);
+  setScore(-127);
+  pros::delay(2800);
+  chassis.pid_turn_set(-90,120);
+  chassis.pid_wait();
+  chassis.pid_drive_set(26,100);
+  chassis.pid_wait();
+  hood.set(false);
+  ballget();
+  ballget();
+  ballget();
+  ballget();
+  pros::delay(100);
+  ballget();
+  ballget();
+  ballget();
+  chassis.pid_turn_set(-90,120);
+  chassis.pid_wait();
+  chassis.pid_drive_set(-29,100);
+  chassis.pid_wait();
+  hood.set(true);
+  setScore(-127);
+  pros::delay(2800);
+  chassis.pid_drive_set(4, 120); 
+  chassis.pid_wait();
+  setScore(127);
+  hood.set(false);
+  chassis.pid_turn_set(-178, 120, true);
+  chassis.pid_wait();
+  chassis.pid_drive_set(90, 120, true);
+  chassis.pid_wait();
+  setScore(-127);
+  chassis.pid_turn_set(-90, 120);
+  chassis.pid_wait();
+  chassis.pid_drive_set(22, 110);
+  chassis.pid_wait();
+  ballget();
+  ballget();
+  ballget();
+  ballget();
+  ballget();
+  pros::delay(100);
+  ballget();
+  ballget();
+  chassis.pid_drive_set(-6,120);
+  chassis.pid_wait();
+  setScore(0);
+  chassis.pid_turn_set(45, 120);
+  chassis.pid_wait();
+  chassis.pid_drive_set(20, 120);
+  chassis.pid_wait();
+  chassis.pid_turn_set(90.5, 120, true);
+  chassis.pid_wait();
+  chassis.pid_drive_set(74, 120);
+  chassis.pid_wait();
+  chassis.pid_turn_set(180, 120);
+  chassis.pid_wait();
+  chassis.pid_drive_set(14, 120);
+  chassis.pid_wait();
+  chassis.pid_turn_set(90, 120);
+  chassis.pid_wait();
+  chassis.pid_drive_set(-6, 120);
+  chassis.pid_wait();
+  hood.set(true);
+  setScore(-127);
+  pros::delay(3000);
+  chassis.pid_turn_set(88, 120);
+  chassis.pid_wait();
+  chassis.pid_drive_set(30, 100);
+  hood.set(false);
+  chassis.pid_wait();
+  ballget();
+  ballget();
+  ballget();
+  ballget();
+  pros::delay(100);
+  ballget();
+  ballget();
+  chassis.pid_drive_set(-3.1,127);
+  chassis.pid_wait();
+  pros::delay(60);
+  chassis.pid_drive_set(3.2,127);
+  chassis.pid_wait();  
+  setScore(0);
+  chassis.pid_drive_set(-28, 127);
+  chassis.pid_wait();  
+  hood.set(true);
+  setScore(-127);
+  pros::delay(2800);
+  setScore(0);
+  chassis.pid_drive_set(22, 127);
+  chassis.pid_wait();  
+  chassis.pid_turn_set(188, 120);
+  chassis.pid_wait();  
+  alignr.set(false);
+  chassis.pid_drive_set(-48, 127);
+*/
   chassis.pid_drive_set(28, 100);
   chassis.pid_wait();
   chassis.pid_turn_set(90,110);
@@ -300,7 +446,6 @@ void skills(){
   chassis.pid_wait();
   chassis.pid_drive_set(24, 75);
   chassis.pid_wait();
-  ballget();
   ballget();
   ballget();
   ballget();

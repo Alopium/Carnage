@@ -9,9 +9,9 @@
 
 inline pros::Motor intakeh(12);
 inline pros::Motor intakef(-14);
-inline ez::Piston hood('A');
-inline ez::Piston descore('B');
-inline ez::Piston alignr('C');
+inline ez::Piston hood('A', false);
+inline ez::Piston descore('B', true);
+inline ez::Piston alignr('C', false);
 
 inline pros::MotorGroup intakes({18, -20});
 inline pros::Motor intakeu(-12);

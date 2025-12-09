@@ -14,6 +14,7 @@ void sethold (int intakePower);
 //lift
 extern ez::PID liftPID;
 void ballget();
+void ballgetf();
 void unjam();
 void liftWait();
 void lift_task();

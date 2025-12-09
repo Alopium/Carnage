@@ -22,6 +22,15 @@ void ballget(){
     chassis.pid_drive_set(3.2,80);
     chassis.pid_wait();
 }
+void ballgetf(){
+    chassis.pid_drive_set(-3.15,110);
+    chassis.pid_wait();
+    pros::delay(50);
+    chassis.pid_drive_set(3.2,110);
+    chassis.pid_wait();
+}
+
+
 void unjam(){
     setnomnom(127);
     pros::delay(150);

@@ -114,7 +114,8 @@ chassis.odom_tracker_back_set(&horzb);
   // Autonomous Selector using LLEMU
   ez::as::auton_selector.autons_add({
 //Auton("TEST", test),
-Auton("HIGH GOAL(LEFT)", highgoalb),
+Auton("SKILLS", skills),
+Auton("LOW GOAL(RIGHT)", lowgoalb),
 Auton("SKILLS", skills),
 Auton("HIGH GOAL(LEFT)", highgoalb),
 Auton("LOW GOAL(RIGHT)", lowgoalb),
