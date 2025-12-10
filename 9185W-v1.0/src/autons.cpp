@@ -432,14 +432,14 @@ void skills(){
   unjam();
   pros::delay(1500);
   unjam();
-  pros::delay(1000);
+  pros::delay(1250);
   chassis.pid_drive_set(4, 110); 
   chassis.pid_wait();
   setScore(127);
   hood.set(false);
   chassis.pid_turn_set(-178, 110, true);
   chassis.pid_wait();
-  chassis.pid_drive_set(90, 110, true);
+  chassis.pid_drive_set(90.5, 110, true);
   chassis.pid_wait();
   setScore(-127);
   chassis.pid_turn_set(-90, 110);

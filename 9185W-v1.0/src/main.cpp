@@ -303,7 +303,7 @@ void opcontrol() {
     // . . .
     hood.button_toggle(master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_R1));
     descore.button_toggle(master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_R2));
-    alignr.button_toggle(master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_B));
+    alignr.button_toggle(master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_RIGHT));
    // freaky.button_toggle(master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_A));
   if (master.get_digital(pros::E_CONTROLLER_DIGITAL_L1)){
     setScore(-127);
